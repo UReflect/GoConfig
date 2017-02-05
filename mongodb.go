@@ -20,18 +20,16 @@ func (config Config) MongoDb() MongoDb {
 		log.Warningf("Config[mongoDb] : %s: %s", err.Error(), "Missing or wrong 'mongoDb' configuration, ignoring")
 	}
 
-	if mongoDb.Host == "" {
-		if config.Settings["Docker"].(bool) {
-			mongoDb.Host = "mongo_api"
-		} else {
+	docker := config.Settings["Docker"].(bool)
+	if docker {
+		mongoDb.Host = "mongo_api"
+		mongoDb.Port = -1
+	} else {
+		if mongoDb.Host == "" {
 			mongoDb.Host = "127.0.0.1"
+			log.Warningf("Config[MongoDb] : %s%s", "Missing 'host' configuration, assuming default value: ", mongoDb.Host)
 		}
-		log.Warningf("Config[MongoDb] : %s%s", "Missing 'host' configuration, assuming default value: ", mongoDb.Host)
-	}
-	if mongoDb.Port == 0 {
-		if config.Settings["Docker"].(bool) {
-			mongoDb.Port = -1
-		} else {
+		if mongoDb.Port == 0 {
 			mongoDb.Port = 9001
 			log.Warningf("Config[MongoDb] : %s%d", "Missing 'port' configuration, assuming default value: ", mongoDb.Port)
 		}
@@ -48,5 +46,5 @@ func (p MongoDb) String() string {
 	if p.Port != -1 {
 		return fmt.Sprintf("mongodb://%s:%d", p.Host, p.Port)
 	}
-	return p.Host
+	return fmt.Sprintf("mongodb://%s", p.Host)
 }

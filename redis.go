@@ -20,12 +20,10 @@ func (config Config) Redis() Redis {
 		log.Warningf("Config[Redis] : %s: %s", err.Error(), "missing or wrong 'redis' configuration, ignoring")
 	}
 
-	if redis.Host == "" {
-		if config.Settings["Docker"].(bool) {
-			redis.Host = "redis_api"
-		} else {
-			redis.Host = "127.0.0.1"
-		}
+	if config.Settings["Docker"].(bool) {
+		redis.Host = "redis_api"
+	} else if redis.Host == "" {
+		redis.Host = "127.0.0.1"
 		log.Warningf("Config[Redis] : %s%s", "Missing 'host' configuration, assuming default value: ", redis.Host)
 	}
 	if redis.Port == 0 {

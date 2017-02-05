@@ -19,12 +19,10 @@ func (config Config) Graylog() Graylog {
 		log.Warningf("Config[graylog] : %s: %s", err.Error(), "Missing or wrong 'graylog' configuration, ignoring")
 	}
 
-	if graylog.Host == "" {
-		if config.Settings["Docker"].(bool) {
-			graylog.Host = "graylog"
-		} else {
-			graylog.Host = "127.0.0.1"
-		}
+	if config.Settings["Docker"].(bool) {
+		graylog.Host = "graylog"
+	} else if graylog.Host == "" {
+		graylog.Host = "127.0.0.1"
 		log.Warningf("Config[Graylog] : %s%s%s", "Missing 'host' configuration, assuming default value: ", graylog.Host)
 	}
 	if graylog.Port == 0 {
