@@ -11,7 +11,6 @@ import (
 type Config struct {
 	Components 	map[string]json.RawMessage
 	Settings   	map[string]interface{}
-	Docker		bool
 }
 
 func (config Config) Int(setting string) int {
@@ -30,14 +29,23 @@ func (config Config) Bool(setting string) bool {
 	return value
 }
 
+func addDocker(config *Config) {
+	if config.Settings == nil {
+		config.Settings = make(map[string]interface{})
+	}
+	if _, ok := config.Settings["Docker"]; !ok {
+		config.Settings["Docker"] = false;
+		if os.Getenv("ENV") == "DOCKER" {
+			config.Settings["Docker"] = true
+			log.Info("Docker : %s", "Start in Docker Mode")
+		}
+	}
+}
+
 func Parse(file string) (Config, error) {
 	var config Config
 
-	config.Docker = false
-	if os.Getenv("ENV") == "DOCKER" {
-		config.Docker = true
-		log.Info("Docker : %s", "Start in Docker Mode")
-	}
+	addDocker(&config);
 
 	f, err := os.Open(file)
 	if err != nil {

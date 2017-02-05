@@ -20,7 +20,7 @@ func (config Config) Graylog() Graylog {
 	}
 
 	if graylog.Host == "" {
-		if config.Docker {
+		if config.Settings["Docker"].(bool) {
 			graylog.Host = "graylog"
 		} else {
 			graylog.Host = "127.0.0.1"

@@ -21,7 +21,7 @@ func (config Config) Redis() Redis {
 	}
 
 	if redis.Host == "" {
-		if config.Docker {
+		if config.Settings["Docker"].(bool) {
 			redis.Host = "redis_api"
 		} else {
 			redis.Host = "127.0.0.1"

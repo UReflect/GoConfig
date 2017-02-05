@@ -21,7 +21,7 @@ func (config Config) MongoDb() MongoDb {
 	}
 
 	if mongoDb.Host == "" {
-		if config.Docker {
+		if config.Settings["Docker"].(bool) {
 			mongoDb.Host = "mongo_api"
 		} else {
 			mongoDb.Host = "127.0.0.1"
@@ -29,7 +29,7 @@ func (config Config) MongoDb() MongoDb {
 		log.Warningf("Config[MongoDb] : %s%s", "Missing 'host' configuration, assuming default value: ", mongoDb.Host)
 	}
 	if mongoDb.Port == 0 {
-		if config.Docker {
+		if config.Settings["Docker"].(bool) {
 			mongoDb.Port = -1
 		} else {
 			mongoDb.Port = 9001
