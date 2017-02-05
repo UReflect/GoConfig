@@ -33,6 +33,7 @@ func (config Config) Bool(setting string) bool {
 func Parse(file string) (Config, error) {
 	var config Config
 
+	config.Docker = false
 	if os.Getenv("ENV") == "DOCKER" {
 		config.Docker = true
 		log.Info("Docker : %s", "Start in Docker Mode")
