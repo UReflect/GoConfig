@@ -37,7 +37,6 @@ func addDocker(config *Config) {
 		config.Settings["Docker"] = false;
 		if os.Getenv("ENV") == "DOCKER" {
 			config.Settings["Docker"] = true
-			log.Info("Docker : %s", "Start in Docker Mode")
 		}
 	}
 }
