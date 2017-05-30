@@ -36,7 +36,7 @@ func (config Config) MongoDb() MongoDb {
 	}
 	if mongoDb.DB == "" {
 		mongoDb.DB = "boilerplate"
-		log.Warningf("Config[MongoDb] : %s%s%s", "Missing 'db' configuration, assuming default value: ", mongoDb.DB)
+		log.Warningf("Config[MongoDb] : %s%s", "Missing 'db' configuration, assuming default value: ", mongoDb.DB)
 	}
 
 	return mongoDb
